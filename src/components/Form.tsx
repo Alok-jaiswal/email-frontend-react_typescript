@@ -1,45 +1,47 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { Editor } from "./Editor";
+// import { Editor } from "./Editor";
 import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import IconButton from "@mui/material/IconButton";
-import Alert from "@mui/material/Alert"; 
-// import CloseIcon from "@mui/icons-material/Close";
+import Alert from "@mui/material/Alert";
+import Constant from "./Apis/constants";
 
-export const Form = () => {
+export const Form = (createdTemplate:any) => {
+  console.log(createdTemplate);
+  
   const [form_Data, Setform_Data] = useState({
     name: "",
     subject: "",
     email: "",
   });
-  const [template, setTemplate] = useState("");
+  // const [template, setTemplate] = useState("");
   const [msg, setMsg] = useState("");
   const [open, setOpen] = React.useState(false);
   const [error, setError] = React.useState(false);
+  
 
-  const handleChange = (e:any) => {
+  const handleChange = (e: any) => {
     Setform_Data({ ...form_Data, [e.target.name]: e.target.value });
   };
 
-  const sendMail = (e:any) => {
+  const sendMail = (e: any) => {
     e.preventDefault();
     postDate();
   };
 
   const postDate = async () => {
-    console.log(template);
     const payload = {
       email: form_Data.email,
       name: form_Data.name,
       subject: form_Data.subject,
-      template: template,
+      template:createdTemplate.createdTemplate,
     };
     // console.log(payload);
 
     axios
-      .post("http://localhost:8080/mail/send", payload)
-      .then((resp:any) => {
+      .post(Constant.postUrls.sendEmail, payload)
+      .then((resp: any) => {
         console.log(resp);
         if (resp.status === 201) {
           setOpen(true);
@@ -49,18 +51,21 @@ export const Form = () => {
           setMsg("Mail not send !");
         }
       })
-      .catch((err:any) => {
+      .catch((err: any) => {
         // console.log(err);
-        if(err){
-          setError(true)
+        if (err) {
+          setError(true);
           setOpen(true);
           setMsg(err.response?.data?.message[0]);
         }
       });
   };
 
-  const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === 'clickaway') {
+  const handleClose = (
+    event: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -84,7 +89,8 @@ export const Form = () => {
   );
 
   return (
-    <div style={{ margin: "0.3rem", marginBottom: "0.2rem" }}>
+    <div style={{ margin: "0.3rem", marginBottom: "0.2rem" }} className="border border-info rounded m-4 p-4 ">
+      {/* <div dangerouslySetInnerHTML={{ __html:}} /> */}
       <Snackbar
         open={open}
         anchorOrigin={{ vertical: "top", horizontal: "right" }}
@@ -93,7 +99,11 @@ export const Form = () => {
         // message={msg}
         action={action}
       >
-        <Alert onClose={handleClose} severity={!error?"success":"error"} sx={{ width: "100%" }}>
+        <Alert
+          onClose={handleClose}
+          severity={!error ? "success" : "error"}
+          sx={{ width: "100%" }}
+        >
           {msg}
         </Alert>
       </Snackbar>
@@ -144,7 +154,7 @@ export const Form = () => {
             />
           </div>
         </div>
-        <Editor setTemplate={setTemplate} />
+        {/* <Editor setTemplate={setTemplate} /> */}
         <button
           type="submit"
           className="btn btn-primary form-control mt-2"

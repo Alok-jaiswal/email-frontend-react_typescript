@@ -1,16 +1,19 @@
+import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import { Form } from "./components/Form";
+import DisplayTemplate from "./components/data/DisplayTemplate";
+import LandingTemplate from "./components/data/LandingTemplate";
+import Templates from "./components/data/templates";
+// import { Form } from "./components/Form";
 
 function App() {
   return (
-    <div className="App row" style={{ width: "100%" }}>
-      <div className="col-md-3 border" style={{height:"100vh"}}> sidebar</div>
-        <div className="col-md-8 border  rounded-3 p-4 " style={{ margin: "auto", marginTop: "30px" }}>
-          <div style={{ textAlign: "center" }}>
-            <h4 className="mb-4">Send Email using this...</h4>
-          </div>
-          <Form />
-        </div>
+    <div className="container">
+      <Routes>
+        <Route path="/" element={ <DisplayTemplate/>} />
+        <Route path="/edit/:id"  element={ <LandingTemplate />} />
+        <Route path="/add" element={<Templates />} />
+        {/* <Route path="/form" element={<Form />} /> */}
+      </Routes>
     </div>
   );
 }
