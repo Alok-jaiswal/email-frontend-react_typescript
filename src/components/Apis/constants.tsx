@@ -1,4 +1,5 @@
-const mainUrl = "http://localhost:8080/";
+const mainUrl = "http://localhost:4000/";
+// const mainUrl = "http://localhost:8080/";
 const Constant = {
   getUrls: {
     getTemplate: mainUrl + "emailtemplate/getalltemplate",
